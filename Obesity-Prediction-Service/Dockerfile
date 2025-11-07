@@ -34,4 +34,4 @@ RUN ls /code
 # predict:app → refers to 'app' object inside predict.py
 # --host 0.0.0.0 → listen on all interfaces
 # --port 9696    → listen on port 9696
-ENTRYPOINT ["uvicorn", "predict:app", "--host", "0.0.0.0", "--port", "9696"]
+ENTRYPOINT ["uvicorn", "model.predict:app", "--host", "0.0.0.0", "--port", "9696"]
