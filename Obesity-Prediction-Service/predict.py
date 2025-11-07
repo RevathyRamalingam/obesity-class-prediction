@@ -5,7 +5,7 @@ import uvicorn
 from typing import Dict, Any
 
 def load_model():
-    with open('model/logistic_regression_model.bin', 'rb') as f_in:
+    with open('logistic_regression_model.bin', 'rb') as f_in:
         pipeline = pickle.load(f_in)
     return pipeline
 app=FastAPI(title="Obesity Prediction Service",description="Predicting obesity levels based on various health and lifestyle factors",version="1.0")
