@@ -24,7 +24,7 @@ RUN pip install fastapi pandas scikit-learn uvicorn
 RUN uv sync --locked
 
 # Copy application code and model data into the container
-COPY "predict.py" "./model/logistic_regression_model.bin" ./
+COPY "main.py" "./model/logistic_regression_model.bin" ./
 
 # Expose TCP port 9696 so it can be accessed from outside the container
 EXPOSE 9696
@@ -33,7 +33,7 @@ EXPOSE 9696
 RUN ls /code
 
 # Run the application using uvicorn (ASGI server)
-# predict:app → refers to 'app' object inside predict.py
+# main:app → refers to 'app' object inside main.py
 # --host 0.0.0.0 → listen on all interfaces
 # --port 9696    → listen on port 9696
-ENTRYPOINT ["uvicorn", "predict:app", "--host", "0.0.0.0", "--port", "9696"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "9696"]
