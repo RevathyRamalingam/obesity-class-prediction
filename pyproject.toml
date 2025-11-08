@@ -15,3 +15,6 @@ dependencies = [
 dev = [
     "requests>=2.32.5",
 ]
+
+[tool.fastapi]
+app = "predict:app"
