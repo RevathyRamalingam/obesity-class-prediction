@@ -4,11 +4,12 @@ from fastapi import FastAPI
 import uvicorn
 from typing import Dict, Any
 
+app=FastAPI(title="Obesity Prediction Service",description="Predicting obesity levels based on various health and lifestyle factors",version="1.0")
 def load_model():
     with open('logistic_regression_model.bin', 'rb') as f_in:
         pipeline = pickle.load(f_in)
     return pipeline
-app=FastAPI(title="Obesity Prediction Service",description="Predicting obesity levels based on various health and lifestyle factors",version="1.0")
+
 pipeline = load_model()
     
 def predict_obesity(customer, pipeline):
