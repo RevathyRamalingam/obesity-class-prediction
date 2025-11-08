@@ -1,8 +1,5 @@
 Obesity Multiclass Classification Problem
 
-This project aims to predict obesity levels based on various factors using a multiclass classification model. The dataset contains information about individuals' health, demographics, and lifestyle choices, and the goal is to classify them into different obesity categories.
-Overview
-
 Obesity is a significant health issue that affects millions of people worldwide. This project uses machine learning to classify individuals into different obesity categories based on various features. By analyzing factors such as age, gender, physical activity, diet, and medical history, the model aims to predict whether a person is underweight, normal weight, overweight, or obese.
 
 The classification problem is addressed using several machine learning algorithms and evaluated using relevant metrics.
@@ -23,3 +20,4 @@ This is a multiclass classification problem where the model must predict one of 
 
 Dataset
 The ObesityDataSet.csv used here is taken from kaggle
+
