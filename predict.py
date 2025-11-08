@@ -1,5 +1,5 @@
 import pickle
-import numpy as np
+#import numpy as np
 from fastapi import FastAPI
 import uvicorn
 from typing import Dict, Any
