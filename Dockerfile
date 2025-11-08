@@ -19,6 +19,8 @@ ENV PATH="/code/.venv/bin:$PATH"
 COPY "pyproject.toml" "uv.lock" ".python-version" ./
 
 # Install dependencies exactly as locked in uv.lock, without updating them
+RUN pip install fastapi pandas scikit-learn uvicorn
+
 RUN uv sync --locked
 
 # Copy application code and model data into the container

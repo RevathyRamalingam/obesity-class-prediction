@@ -11,6 +11,7 @@ def load_model():
         pipeline = pickle.load(f_in)
     return pipeline
 
+
 pipeline = load_model()
     
 def predict_obesity(customer, pipeline):
