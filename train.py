@@ -16,7 +16,7 @@ import pickle
 import os
 
 #Read the dataset
-df = pd.read_csv('../data/ObesityDataSet.csv')
+df = pd.read_csv('data/ObesityDataSet.csv')
 
 #Basic data cleaning - 
 # removing duplicates 
