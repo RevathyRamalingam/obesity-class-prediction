@@ -7,7 +7,7 @@ from typing import Dict, Any
 app=FastAPI()
 
 def load_model():
-    with open('logistic_regression_model.bin', 'rb') as f_in:
+    with open('model/logistic_regression_model.bin', 'rb') as f_in:
         pipeline = pickle.load(f_in)
     return pipeline
 
