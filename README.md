@@ -148,23 +148,31 @@ curl -X 'POST' \
     "caec": "sometimes",
     "mtrans": "automobile"
   }'
+  ```
 Option 2: Using Uvicorn
+
 Clone the repository:
 
-bash
-
 git clone https://github.com/RevathyRamalingam/obesity-class-prediction.git
+
 cd obesity-class-prediction
+
 Install Uvicorn and FastAPI:
+
 pip install uvicorn fastapi
+
 Run the Uvicorn server:
+
 uvicorn main:app --host 0.0.0.0 --port 9696
-Open your browser and go to:
+
+Open your browser and go to below url,provide the same JSON input as before to get obesity prediction
 
 http://127.0.0.1:9696/docs
-Provide the same JSON input as mentioned earlier to get the obesity prediction.
+
+---
 
 ☁️ Steps to Deploy the Project in the Cloud (Render)
+
 Go to Render.
 
 Sign in to your account or create a new one.
@@ -178,6 +186,7 @@ You'll be prompted to Connect GitHub to Render if you haven't done so already. F
 After connecting GitHub, select the repository:
 
 https://github.com/RevathyRamalingam/obesity-class-prediction
+
 In Settings, fill in the following:
 
 General:
@@ -215,6 +224,10 @@ If you provide an extra field in the input JSON, you'll receive a 422 Unprocessa
     }
   ]
 }
+
+---
+
 📝 Conclusion
+
 This project demonstrates how to use machine learning to predict obesity categories using multiclass classification model based on various health and lifestyle factors. It provides a simple web API using FastAPI that can be deployed locally with Docker or in the cloud with Render.
 
