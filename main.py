@@ -24,8 +24,8 @@ class Customer(BaseModel):
         "bike"
     ]
     age: int = Field(..., ge=5)
-    height: float = Field(..., ge=0)
-    weight: float = Field(..., ge=3)
+    height: float = Field(..., ge=1.0)
+    weight: float = Field(..., ge=10)
     fcvc: float = Field(..., ge=1.0, le=3.0)
     ncp: float = Field(..., ge=1.0, le=4.0)
     ch2o: float = Field(..., ge=1.0, le=3.0)
