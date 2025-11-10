@@ -45,7 +45,7 @@ app = FastAPI(title="Obesity Prediction API", version="1.0")
 
 # Load the pre-trained model
 def load_model():
-    with open('logistic_regression_model.bin', 'rb') as f_in:
+    with open('model/logistic_regression_model.bin', 'rb') as f_in:
         pipeline = pickle.load(f_in)
     return pipeline
 
