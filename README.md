@@ -252,6 +252,7 @@ If you provide an extra field in the input JSON, you'll receive a 422 Unprocessa
 
 📝 Conclusion
 
-This project demonstrates how to use machine learning to predict obesity categories using multiclass classification model based on various health and lifestyle factors. It provides a simple web API using FastAPI that can be deployed locally with Docker or in the cloud with Render.
+This project demonstrates how to use machine learning to predict obesity categories using multiclass classification model based on various health and lifestyle factors. It provides a simple web application using FastAPI that can be deployed locally with Docker or in the cloud with Render.
+
 
 
