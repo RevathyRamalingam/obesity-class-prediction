@@ -32,6 +32,7 @@ The project folder consists of the following files and directories:
 - `main.py` — Contains the FASTAPI app to make predictions, similar to `predict.py`.
 - `requirements.txt` — Lists all the required Python libraries (e.g., pandas, numpy, scikit-learn, fastapi, pydantic) for cloud deployment on Render.
 - `train.py` — Saves the final model as `logistic_regression_model.bin` in the `model` directory after dataset cleaning, hyperparameter tuning, and model training (done in the Jupyter notebook `notebook.ipynb`).
+- `notebook.py` - run this script to see how hyperparameter tuning and model is evaluated against performance like recall, precision and F1 scores.
 - `notebook.ipynb` — Jupyter notebook with the following steps:
   - Fetch dataset, preprocess, and clean data.
   - Perform correlation and mutual information analysis.
@@ -252,4 +253,5 @@ If you provide an extra field in the input JSON, you'll receive a 422 Unprocessa
 📝 Conclusion
 
 This project demonstrates how to use machine learning to predict obesity categories using multiclass classification model based on various health and lifestyle factors. It provides a simple web API using FastAPI that can be deployed locally with Docker or in the cloud with Render.
+
 
