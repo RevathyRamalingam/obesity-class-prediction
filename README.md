@@ -58,9 +58,29 @@ Part 2: Pydantic validation on API[https://www.loom.com/share/4cefb723b71d4d3088
 ---
 TRAINING THE MODEL
 
-You can run the notebook.py script to see how the model is trained and hyperparameter tuning is done for several algorithms such as LinearRegression, DecisionTree and randomForestRegressor.
+You can run the notebook.py script to see how the model is trained and hyperparameter tuning is done for several algorithms such as LogisticRegression, DecisionTree and randomForestRegressor.
 > python notebook.py
 ---
+PROJECT OBSERVATION
+
+1. height and weight feature have highest correlation in Obesity prediction.
+2. The UCI obesity dataset taken from kaggle is a balanced dataset with imbalance ratio of 1.3 <2 ==> well balanced dataset.
+    Also observed that scaling worsened the results as the features were already in right scale for modeling. Learnt that scaling is always not needed as sometimes the features will already be on the right scale for modeling. It is not a mandatory step and varies case to case.
+3. ##Simplicity matters
+   The model is evaluated against LogisticRegression, DecisionTree and RandomForestRegressor. As all the models gave almost same ROC_SCORE, precision,recall and F1 score metric, the simplest model LogisticRegression is chosen rather than selecting other complex models.
+4. K Fold crossvalidation also confirmed the metrics and the stability of the model
+5. Logistic Regression achieved an impressive ROC_SCORE of 0.986 with regularization (C=10) tuned to best value.
+6. Final model evaluated with training+validation dataset and saved as binary file.
+7. The model is read by Obesity Prediction Service(FAST API) and predicts the Obesity level of the customer for the input json(5customer data).
+8. It is also deployed in cloud Render and web service works independently without any hassle.
+9. This project helps people to stay alert and keep check on their weight, food habits and lifestyle factors.
+
+--------
+FUTURE PROJECT SCOPE
+
+1. Hospitals can run this prediction service and update the customer of their health status from time to time. They can also ask customer to update their inputs and give accurate results of their current health status. This helps people to stay proactive of their health issues like heart attack , kidney failure or other disorders early , take appropriate measures (like may be increase their workout time, walking time, eating low calorie food )and stay fit and healthy.
+2. The prediction service can be extended to give useful suggestions to overcome their obesity levels like increase walking time, increase intake of water, avoid high fat contentfood,etc. other than just giving the health status (obesity level prediction).
+
 
 ## 🛠 Steps to Run the Project Locally
 
@@ -172,6 +192,8 @@ http://127.0.0.1:9696/docs
 ---
 
 ☁️ Steps to Deploy the Project in the Cloud (Render)
+
+The settings for Render are also available as screenshots in output_screenshots folder.Below is the detailed steps for the deployment.
 
 Go to Render.
 
