@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[121]:
 
 
 import pandas as pd
@@ -12,12 +12,14 @@ from sklearn.metrics import mutual_info_score,accuracy_score,roc_auc_score,confu
 from sklearn.feature_extraction import DictVectorizer 
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier,export_text
+from sklearn.metrics import precision_recall_curve, average_precision_score
+from sklearn.preprocessing import label_binarize
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 
 
-# In[28]:
+# In[122]:
 
 
 df = pd.read_csv('data/ObesityDataSet.csv')
@@ -26,7 +28,7 @@ df.isna().sum()
 
 # There are no null values in the columns but there are 24 duplicated rows.Lets remove them from the dataset
 
-# In[29]:
+# In[123]:
 
 
 print("Number of duplicated rows:", df.duplicated().sum())
@@ -65,7 +67,7 @@ df.shape
 # smoke                             0.008509
 # 
 
-# In[30]:
+# In[124]:
 
 
 df.columns = df.columns.str.replace(' ', '_').str.lower()
@@ -80,7 +82,7 @@ numerical_cols
 
 # There are no missing values in this dataset. Basic datacleaning is done 
 
-# In[31]:
+# In[125]:
 
 
 for c in categorical_cols:
@@ -92,7 +94,7 @@ for c in numerical_cols:
 
 # Let's check the correlation coefficient for numerical values in the training dataset after doing the test split
 
-# In[32]:
+# In[126]:
 
 
 df_fulltrain,df_test=train_test_split(df, test_size=0.2, random_state=42)
@@ -110,7 +112,7 @@ y_fulltrain = df_fulltrain['nobeyesdad']
 
 # Let us plot the distribution of target variable to understand the obesity levels of people
 
-# In[33]:
+# In[127]:
 
 
 plt.figure(figsize=(4, 4))
@@ -138,7 +140,7 @@ print("Class Imbalance Ratio :", class_imbalance_ratio)
 
 # class imbalance ratio is 1.31 <2 =>well balanced dataset
 
-# In[34]:
+# In[128]:
 
 
 # Plot the correlation matrix as a heatmap
@@ -151,7 +153,7 @@ plt.show()
 
 # From the heatmap , it is clear that all values of |r|<0.5 ==> all numerical features are distinct and are not redundant.So we can retain all the numerical features. Let's calculate Mutual Information Score for categorical values.
 
-# In[35]:
+# In[129]:
 
 
 if 'nobeyesdad' in categorical_cols:
@@ -169,7 +171,7 @@ mi.sort_values(ascending=False)
 # Let's create a confusion matrix  and classification report to undertand recall,precision and f1 scores
 # 
 
-# In[36]:
+# In[ ]:
 
 
 Model_ROC_AUC_scores = []
@@ -200,6 +202,7 @@ cm = confusion_matrix(y_val, y_pred)
 print("Confusion Matrix:\n", cm)
 print("\nClassification Report:\n", classification_report(y_val, y_pred))
 
+
 # Visualizing the confusion matrix
 plt.figure(figsize=(8, 6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['insufficient_weight', 'normal_weight', 'obesity_type_i', 'obesity_type_ii','obesity_type_iii','overweight_level_i','overweight_level_ii'], yticklabels=['insufficient_weight', 'normal_weight', 'obesity_type_i', 'obesity_type_ii','obesity_type_iii','overweight_level_i','overweight_level_ii'])
@@ -211,12 +214,14 @@ plt.show()
 
 # Let's check the model with cross-validation
 
-# In[37]:
+# In[ ]:
 
 
 n_splits = 5
-
-for C in [0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 5, 10, 20, 30, 40, 50,100,200]:
+mean_scores=[]
+std_deviation= []
+reg_params = [0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 5, 10, 20, 30, 40, 50,100,200]
+for C in reg_params:
     kfold = KFold(n_splits=n_splits, shuffle=True, random_state=1)
 
     scores = []
@@ -234,16 +239,28 @@ for C in [0.001, 0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 1, 5, 10, 20, 30, 40, 50,100,200
         y_pred,y_pred_proba = predict(df_val, dv, model)
 
         auc = roc_auc_score(y_val, y_pred_proba,multi_class='ovr')
-        scores.append(auc)
 
-    print('C=%s %.3f +- %.3f' % (C, np.mean(scores), np.std(scores)))
+    scores.append(auc)
+    mean_scores.append(np.mean(scores))
+    std_deviation.append(np.std(scores))
 
 
-# From cross-validation using Kfold it is clear that at C=10 or20, the roc_auc is close to optimum 0.986.So lets choose C=10 as our
-# final regularization value
+    # Plotting the AUC scores
+plt.figure(figsize=(10, 6))
+plt.plot(reg_params, mean_scores, marker='o', linestyle='-', color='b', label='AUC Score')
+plt.plot(reg_params, std_deviation, marker='o', linestyle='--', color='r', label='STD Deviation')
+plt.xlabel('regularization c value')
+plt.ylabel('AUC Score/std_deviation')
+plt.title('Regularization vs auc metrics')
+plt.legend()
+plt.show()
+
+
+
+# From cross-validation using Kfold it is clear that at C=100 the roc score is maximum.But at c=10 the roc_auc is close to optimum 0.986.So lets choose C=10 as our final regularization value
 # Lets train a final model combining both training and validation dataset and calculate roc_score against test dataset
 
-# In[38]:
+# In[ ]:
 
 
 y_fulltrain = df_fulltrain.nobeyesdad
@@ -252,13 +269,15 @@ dv,model = train(df_fulltrain, y_fulltrain, C=10)
 y_test, y_test_proba = predict(df_test, dv, model)
 
 roc_auc = roc_auc_score(y_test, y_test_proba, multi_class='ovr')
+classification_rep = classification_report(y_test, y_test)
+print("Classification Report on test data:\n", classification_rep)
 print("LogisticRegression Model ROC AUC with test data: ", np.round(roc_auc, 3))
 
 
 
-# After training the model with both validation and training data, it is testing with test data , we get optimum result with roc_score of 1.0 Moving on to decisiontree to check the performance
+# After training the model with both validation and training data, it is tested with test data , we get optimum result with roc_score of 1.0 Moving on to decisiontree to check the performance
 
-# In[39]:
+# In[ ]:
 
 
 dv= DictVectorizer(sparse=True)
@@ -296,7 +315,7 @@ plt.show()
 
 # Decision trees parameter tuning max_depth=5, 6, 7 and 8 have high ROC score.Lets find out the best values for min_sample_leaves
 
-# In[40]:
+# In[ ]:
 
 
 scores = []
@@ -323,7 +342,7 @@ sns.heatmap(pivot_table, annot=True, fmt=".3f")
 # The model is tested with testdata and  the scores ROC_AUC score is 0.978 which is almost same as validation ROC_AUC. 
 # This confirms that DecisionTree model is not overfitting and consistent in prediction
 
-# In[41]:
+# In[ ]:
 
 
 dt = DecisionTreeClassifier(max_depth=7,min_samples_leaf=15, random_state=42)
@@ -338,7 +357,7 @@ Model_ROC_AUC_scores.append(('Decision Tree', roc_auc))
 
 # Now let's train Ensemble Forest Classifier model
 
-# In[42]:
+# In[ ]:
 
 
 scores = []
@@ -366,7 +385,7 @@ print(export_text(rf.estimators_[0], feature_names=list(dv.get_feature_names_out
 # Ensemble Random forest model gave best ROC_AUC of 0.991 with n_estimators =110.
 # let's check with test data how the Random forest is performing
 
-# In[43]:
+# In[ ]:
 
 
 rf = RandomForestClassifier(n_estimators=110, random_state=42)
@@ -395,7 +414,7 @@ print("Random Forest with TestData Accuracy:", np.round(accuracy, 3),"ROC AUC:",
 # Almost same ROC_AUC score can be seen for all the models that we have evaluated so far.
 # Lets plot graph to evaluate the models
 
-# In[44]:
+# In[ ]:
 
 
 Model, ROC_AUC_Score = zip(*Model_ROC_AUC_scores)
@@ -427,7 +446,7 @@ plt.show()
 # From the graph, it is clear that all models give the same ROC_AUC score.Let's finalize the simple LogisticRegression model
 # for deployment
 
-# In[47]:
+# In[ ]:
 
 
 for n in numerical_cols:
