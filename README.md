@@ -193,7 +193,12 @@ http://127.0.0.1:9696/docs
 ---
 
 ☁️ Steps to Deploy the Project in the Cloud (Render)
+There are two ways by which you can run the project in cloud:
+1. pulling the docker image from Dockerhub 
+Select image from dockerhub with the name "docker pull revathy1/obesity-predict:1" and choose deploy.
+It will automatically run the image from docker hub.
 
+2. Deploying it manually 
 The settings for Render are also available as screenshots in output_screenshots folder.Below is the detailed steps for the deployment.
 
 Go to Render.
